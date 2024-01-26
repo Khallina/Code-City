@@ -1,0 +1,88 @@
+import processing.core.PImage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+public class Dude_Not_Full extends DudeResources {
+    public Dude_Not_Full(String id, Point position, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images, PathingStrategy pStrategy) {
+        super(id, position, images, resourceLimit, 0, actionPeriod, animationPeriod, pStrategy);
+    }
+    public static Entity createDudeNotFull(String id, Point position, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images, PathingStrategy pStrategy) {
+        return new Dude_Not_Full(id, position, actionPeriod, animationPeriod, resourceLimit, images, getDude_PATHING());
+    }
+    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> target = world.findNearest(this.getPosition(), ((entity -> entity instanceof Tree || entity instanceof Sapling)));
+
+        if (target.isEmpty() || !this.moveTo(world, target.get(), scheduler) || !this.transform(world, scheduler, imageStore)) {
+            scheduler.scheduleEvent(this, Activity.createActivityAction(this, world, imageStore), this.getActionPeriod());
+        }
+    }
+
+    //moveToFull
+    public boolean moveTo(WorldModel world, Entity target, EventScheduler scheduler) {
+        if (Point.adjacent(this.getPosition(), target.getPosition())) {
+            this.setResourceCount(this.getResourceCount() + 1);
+            ((Plant)target).setHealth(((Plant)target).getHealth()-1);
+            return true;
+        } else {
+            Point nextPos = nextPosition(world, (target).getPosition());
+
+            if (!this.getPosition().equals(nextPos)) {
+                world.moveEntity(scheduler, this, nextPos);
+            }
+            return false;
+        }
+    }
+
+    public boolean transform(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
+        if (this.getResourceCount() >= this.getResourceLimit()) {
+            Entity dude = Dude_Full.createDudeFull(this.getId(), this.getPosition(), this.getActionPeriod(), this.getAnimationPeriod(), this.getResourceLimit(), this.getImages(), getDude_PATHING());
+
+            world.removeEntity(scheduler, this);
+            scheduler.unscheduleAllEvents(this);
+
+            world.addEntity(dude);
+            ((Dude_Full)dude).scheduleActions(scheduler, world, imageStore);
+
+            return true;
+        }
+
+        return false;
+    }
+}
+
+import processing.core.PImage;
+
+import java.util.List;
+
+public abstract class Change extends AnimatedPeriod {
+    private double actionPeriod;
+    private int resourceLimit;
+    private int resourceCount;
+    public int getResourceLimit() { return resourceLimit; }
+
+    public int getResourceCount() { return resourceCount;}
+    public void setResourceCount(int resourceCount) {
+        this.resourceCount = resourceCount;
+    }
+
+    public Change(String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double AnimationPeriod) {
+        super(id, position, images, AnimationPeriod);
+        this.resourceLimit = resourceLimit;
+        this.resourceCount = resourceCount;
+        this.actionPeriod = actionPeriod;
+    }
+
+    public double getActionPeriod() {
+        return actionPeriod;
+    }
+
+    public void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
+        scheduler.scheduleEvent(this, Activity.createActivityAction (this, world, imageStore), this.getActionPeriod());
+        scheduler.scheduleEvent(this, Animation.createAnimationAction (this, 0), this.getAnimationPeriod());
+    }
+    public abstract void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler);
+
+}
