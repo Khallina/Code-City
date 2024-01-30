@@ -1,22 +1,47 @@
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class ClassInfo {
+public class Info {
     private String className;
     private int LinesOfCode;
     private String parentClass;
     private Map<String, String> variables;
+    private String interfaceName;
 
-    public ClassInfo() {
+    private List<String> functions;
+
+    private String implementer;
+    //Story: Parse the code
+    public Info() {
         this.className = null;
         this.LinesOfCode = 0;
         this.parentClass = null;
+        this.interfaceName = null;
         this.variables = new HashMap<>();
+        this.functions = new ArrayList<>();
+        this.implementer = null;
+
     }
+
+    public void setImplementer(String implementer) {
+        this.implementer = implementer;
+    }
+
+    public String getImplementer() {
+        return implementer;
+    }
+
+    public void setInterfaceName(String interfaceName) {this.interfaceName = interfaceName;}
+
+    public String getInterfaceName() {
+        return interfaceName;
+    }
+
     public void setClassName(String name) {
         this.className = name;
+    }
+
+    public String getClassName() {
+        return className;
     }
 
     public void addLinesOfCode(int num) {
@@ -32,6 +57,12 @@ public class ClassInfo {
 
     public void addVariable(String variableName, String scope) {
         variables.put(variableName, scope);
+    }
+    public void addFunction(String functionName) {
+        functions.add(functionName);
+    }
+    public List<String> getFunctions() {
+        return functions;
     }
 
     public int getLinesOfCode() {
