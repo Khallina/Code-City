@@ -1,17 +1,20 @@
-import java.lang.reflect.Method;
-
 public class Building {
-    
+    private String name; // name of building is just name of class
     private int height;
     private int base;
     private String color;
     private int transparency;
 
-    public Building(int height, int base) {
+    public Building(String name, int base, int height) {
+        this.name = name;
         this.height = height; // number of methods
         this.base = base; // number of attributes
         this.color = null;
         this.transparency = 0;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setHeight(int num) {
@@ -34,5 +37,4 @@ public class Building {
         this.height = Util.countMethods(obj);
         this.base = Util.countAttributes(obj);
     }
-
 }
