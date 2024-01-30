@@ -9,19 +9,19 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class GetFile {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    //public static void main(String[] args) {
+       // Scanner scanner = new Scanner(System.in);
         // Download and extract the GitHub repository
-        try (scanner) {
-            System.out.print("Enter GitHub repository URL: ");
-            String repoUrl = scanner.nextLine().trim();
-            downloadAndExtractRepository(repoUrl);
-        } catch (IOException e) {
-            System.err.println("Error downloading repository: " + e.getMessage());
-        }
-    }
+       // try (scanner) {
+       //     System.out.print("Enter GitHub repository URL: ");
+       //     String repoUrl = scanner.nextLine().trim();
+       //     downloadAndExtractRepository(repoUrl);
+       // } catch (IOException e) {
+       //    System.err.println("Error downloading repository: " + e.getMessage());
+    //    //}
+   // }
 
-    private static void downloadAndExtractRepository(String repoUrl) throws IOException {
+    public static Path downloadAndExtractRepository(String repoUrl) throws IOException {
         // Create a temporary directory to store the downloaded ZIP file
         Path tempDirectory = Files.createTempDirectory("GitHubRepo");
 
@@ -49,7 +49,7 @@ public class GetFile {
 
         // Clean up: delete the ZIP file
         Files.delete(tempDirectory.resolve("repository.zip"));
-        System.out.println("Repository extracted to: " + extractDirectory.toAbsolutePath());
+        return extractDirectory.toAbsolutePath();
     }
 }
 
