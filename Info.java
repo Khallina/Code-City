@@ -4,7 +4,8 @@ public class Info {
     private String className;
     private int LinesOfCode;
     private String parentClass;
-    private Map<String, String> variables;
+    private List<String> globalVariables;
+    private List<String> localVariables;
     private String interfaceName;
 
     private List<String> functions;
@@ -16,7 +17,8 @@ public class Info {
         this.LinesOfCode = 0;
         this.parentClass = null;
         this.interfaceName = null;
-        this.variables = new HashMap<>();
+        this.globalVariables = new ArrayList<>();
+        this.localVariables = new ArrayList<>();
         this.functions = new ArrayList<>();
         this.implementer = null;
 
@@ -51,13 +53,15 @@ public class Info {
         this.parentClass = parentClass;
     }
 
-    public Map<String, String> getVariables() {
-        return variables;
-    }
+    //public Map<String, String> getVariables() {
+    //    return variables;
+    //}
 
-    public void addVariable(String variableName, String scope) {
-        variables.put(variableName, scope);
-    }
+    //public void addVariable(String variableName, String scope) {
+    //    variables.put(variableName, scope);
+    //}
+    public void addGlobalVariable(String globalVariableName) {globalVariables.add(globalVariableName);}
+    public void addLocalVariable(String localVariableName) {localVariables.add(localVariableName);}
     public void addFunction(String functionName) {
         functions.add(functionName);
     }
@@ -73,23 +77,26 @@ public class Info {
         return parentClass;
     }
 
-    public Set<String> getGlobalVariables() {
-        Set<String> globalVariables = new HashSet<>();
-        for (Map.Entry<String, String> entry : variables.entrySet()) {
-            if (entry.getValue().equals("global")) {
-                globalVariables.add(entry.getKey());
-            }
-        }
-        return globalVariables;
-    }
+    public List<String> getGlobalVariables() {return globalVariables;}
+    public List<String> getLocalVariables() {return localVariables;}
 
-    public Set<String> getLocalVariables() {
-        Set<String> localVariables = new HashSet<>();
-        for (Map.Entry<String, String> entry : variables.entrySet()) {
-            if (entry.getValue().equals("local")) {
-                localVariables.add(entry.getKey());
-            }
-        }
-        return localVariables;
-    }
+  //  public Set<String> getGlobalVariables() {
+  //      Set<String> globalVariables = new HashSet<>();
+  //      for (Map.Entry<String, String> entry : variables.entrySet()) {
+  //          if (entry.getValue().equals("global")) {
+   //             globalVariables.add(entry.getKey());
+   //         }
+   //     }
+  //      return globalVariables;
+  //  }
+
+  //  public Set<String> getLocalVariables() {
+  //      Set<String> localVariables = new HashSet<>();
+  //      for (Map.Entry<String, String> entry : variables.entrySet()) {
+  //          if (entry.getValue().equals("local")) {
+  //              localVariables.add(entry.getKey());
+   //         }
+   //     }
+   //     return localVariables;
+   // }
 }

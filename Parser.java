@@ -94,14 +94,16 @@ public class Parser {
                         !line.startsWith("//") && !line.contains("(")) { //"(" check for functions getting caught
                     String[] lineParts = line.split(" ");
                     if (lineParts.length >= 2) {
-                            currentClassInfo.addVariable(lineParts[2].split(";")[0], "global");
+                            currentClassInfo.addGlobalVariable(lineParts[2].split(";")[0]);
+                           // currentClassInfo.addVariable(lineParts[2].split(";")[0], "global");
                         }
 
                 } else if (line.contains("=") && line.contains(";") && !line.startsWith("//")) {
                     String[] lineParts = line.split(" ");
                     if (lineParts.length >= 2) {
                         if (insideMethod & !lineParts[0].contains("this")) {
-                            currentClassInfo.addVariable(lineParts[1].split(";")[0], "local");
+                            currentClassInfo.addLocalVariable(lineParts[1].split(";")[0]);
+                            //currentClassInfo.addVariable(lineParts[1].split(";")[0], "local");
                         }
                     }
                 }
