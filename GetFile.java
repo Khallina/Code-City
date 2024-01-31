@@ -8,7 +8,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class GetFile {
-    public static Path downloadAndExtractRepository(String repoUrl) throws IOException {
+    public String downloadAndExtractRepository(String repoUrl) throws IOException {
         // Create a temporary directory to store the downloaded ZIP file
         Path tempDirectory = Files.createTempDirectory("GitHubRepo");
 
@@ -36,7 +36,7 @@ public class GetFile {
 
         // Clean up: delete the ZIP file
         Files.delete(tempDirectory.resolve("repository.zip"));
-        return extractDirectory.toAbsolutePath();
+        return extractDirectory.toAbsolutePath().toString();
     }
 }
 
