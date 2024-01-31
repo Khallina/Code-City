@@ -1,23 +1,20 @@
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-//Story: Parse the code
-//This is a test main for my own purposes so I can run it and see what its getting
+
 public class Main {
+    public Main() {
+    }
+
     public static void main(String[] args) {
-        // Replace "your_file_path_here" with the actual path to your file
         String filePath = "ParseTest";
-
-        // Create an instance of the Parser class
         Parser parser = new Parser();
-
-        // Call the parse method and get the result
         Map<String, Info> result = parser.parse(filePath);
+        Iterator var4 = result.entrySet().iterator();
 
-        // Print or inspect the result
-        for (Map.Entry<String, Info> entry : result.entrySet()) {
-            //String className = entry.getKey();
-            Info classInfo = entry.getValue();
-
+        while(var4.hasNext()) {
+            Map.Entry<String, Info> entry = (Map.Entry)var4.next();
+            Info classInfo = (Info)entry.getValue();
             if (classInfo.getClassName() != null) {
                 System.out.println("Class: " + classInfo.getClassName());
             } else {
@@ -27,6 +24,7 @@ public class Main {
                     System.out.println("   Functions: " + String.join(", ", functions));
                 }
             }
+
             System.out.println("   Lines of Code: " + classInfo.getLinesOfCode());
             System.out.println("   Parent Class: " + classInfo.getParentClass());
             System.out.println("   Implements Interface: " + classInfo.getImplementer());
@@ -34,5 +32,6 @@ public class Main {
             System.out.println("   Local Variables: " + classInfo.getLocalVariables());
             System.out.println();
         }
+
     }
 }
