@@ -1,38 +1,53 @@
 import java.util.List;
 import java.util.Map;
+import javax.swing.*;
+import java.io.IOException;
+import java.util.Scanner;
+import java.io.File;
+
 //Story: Parse the code
 //This is a test main for my own purposes so I can run it and see what its getting
-public class Main {
+public class Main extends JFrame {
+    public Main() {
+
+    }
     public static void main(String[] args) {
-        // Replace "your_file_path_here" with the actual path to your file
-        String filePath = "ParseTest";
+        //get github repo
+        String repoPath;
 
-        // Create an instance of the Parser class
-        Parser parser = new Parser();
+        Scanner scanner = new Scanner(System.in);
+        // prompt end user to enter repo url
+        try (scanner) {
+            System.out.print("Enter GitHub repository URL: ");
+            String repoUrl = scanner.nextLine().trim();
 
-        // Call the parse method and get the result
-        Map<String, Info> result = parser.parse(filePath);
+            repoPath = GetFile.downloadAndExtractRepository(repoUrl); //saves repo into repoPath
 
-        // Print or inspect the result
-        for (Map.Entry<String, Info> entry : result.entrySet()) {
-            //String className = entry.getKey();
-            Info classInfo = entry.getValue();
+            File repo = new File(repoPath);
 
-            if (classInfo.getClassName() != null) {
-                System.out.println("Class: " + classInfo.getClassName());
-            } else {
-                System.out.println("Interface: " + classInfo.getInterfaceName());
-                List<String> functions = classInfo.getFunctions();
-                if (!functions.isEmpty()) {
-                    System.out.println("   Functions: " + String.join(", ", functions));
+            if (repo.exists() && repo.isDirectory()) {
+                File[] repoFiles = repo.listFiles(); //list of repo contents
+                for (File cities : repoFiles) {
+                    //if file is a directory, make a platform (city)
+                    if (cities.isDirectory()) {
+                        File[] city = cities.listFiles();
+                        //for each building in a city
+                        for (File building : city) {
+                            if (building.isFile()) {
+                                // Create an instance of the Parser class
+                                Parser parser = new Parser();
+
+                                // Call the parse method and get the result
+                                Map<String, Info> result = parser.parse(building.getName());
+
+                            }
+                        }
+                    }
                 }
             }
-            System.out.println("   Lines of Code: " + classInfo.getLinesOfCode());
-            System.out.println("   Parent Class: " + classInfo.getParentClass());
-            System.out.println("   Implements Interface: " + classInfo.getImplementer());
-            System.out.println("   Global Variables: " + classInfo.getGlobalVariables());
-            System.out.println("   Local Variables: " + classInfo.getLocalVariables());
-            System.out.println();
+
+        } catch (IOException e) {
+            System.err.println("Error downloading repository: " + e.getMessage());
         }
     }
 }
