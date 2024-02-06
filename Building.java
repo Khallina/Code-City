@@ -1,10 +1,12 @@
+import java.awt.*;
+
 public class Building {
     
     private String name; // name of building is just name of class
     private int x;
     private int height;
     private int base;
-    private String color;
+    private Color color;
     private int transparency;
     private String family;
 
@@ -29,7 +31,7 @@ public class Building {
         this.base = num;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
@@ -54,7 +56,7 @@ public class Building {
         return base;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 

@@ -34,6 +34,7 @@ class BuildingPanel extends JPanel {
                 }
             }
             //draw building
+            g.setColor(building.getColor());
             g.drawRect(building.getX(), y_copy, building.getBase(), building.getHeight());
         }
     }
@@ -43,7 +44,7 @@ public class CodeCity {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Building Stacker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 300);
+        frame.setSize(1000, 600);
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
 
@@ -95,7 +96,7 @@ public class CodeCity {
                                     local_var += classInfo.getLocalVariables().size();
                                     family = classInfo.getParentClass();
                                 }
-                                base += 50*global_var;
+                                base += 10*global_var;
                                 Building b = new Building(name,base,height,x);
                                 x = x + base + 50;
                                 //set building family
@@ -108,14 +109,14 @@ public class CodeCity {
                                 //case 3: has local vars only: set to blue
                                 if (global_var > 0) {
                                     if (local_var > 0) {
-                                        b.setColor("green");
+                                        b.setColor(Color.GREEN);
                                     }
                                     else {
-                                        b.setColor("red");
+                                        b.setColor(Color.RED);
                                     }
                                 } else {
                                     if (local_var > 0) {
-                                        b.setColor("blue");
+                                        b.setColor(Color.BLUE);
                                     }
                                 }
                                 buildings.add(b); //add the building to the list of buildings in the city platform
