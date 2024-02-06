@@ -9,33 +9,38 @@ import java.util.Scanner;
 
 class BuildingPanel extends JPanel {
     private List<Building> buildings;
-    private int maxHeight; // Maximum height of buildings in the city
+    private int base_height; // Maximum height of buildings in the city
 
-    public BuildingPanel(List<Building> buildings, int maxHeight) {
+    public BuildingPanel(List<Building> buildings, int base_height) {
         this.buildings = buildings;
-        this.maxHeight = maxHeight;
+        this.base_height = base_height;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int y = getHeight() - maxHeight; // Calculate the starting y-coordinate based on the panel height and maximum building height
+        int y = this.base_height; // Start at the bottom of the panel
 
-        //make 1 city platform
+        // Make 1 city platform
         for (Building building : buildings) {
-            int y_copy = y;
+            int building_y = y - building.getHeight(); // Adjust the y-coordinate to start at the bottom of the building
+
             if (building.getFamily() != null) {
                 for (Building b : buildings) {
-                    // make buildings with the same family stack on top of each other with a gap of 10 in between
+                    // Make buildings with the same family stack on top of each other with a gap of 10 in between
                     if (b.getName().equals(building.getFamily())) {
                         building.setX(b.getX());
-                        y_copy = y_copy + b.getHeight() + 10;
+                        building_y = building_y - b.getHeight() - 10; // Adjust the y-coordinate to stack the buildings
                     }
                 }
             }
-            //draw building
+
+            // Draw building
             g.setColor(building.getColor());
-            g.drawRect(building.getX(), y_copy, building.getBase(), building.getHeight());
+            g.drawRect(building.getX(), building_y, building.getBase(), building.getHeight());
+            // Draw a black line across the bottom of the platform
+            g.setColor(Color.BLACK);
+            g.drawLine(0, base_height + 1, getWidth(), base_height + 1);
         }
     }
 }
@@ -44,7 +49,7 @@ public class CodeCity {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Building Stacker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 600);
+        frame.setSize(1200, 600);
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
 
@@ -64,15 +69,15 @@ public class CodeCity {
             if (repo.exists() && repo.isDirectory()) {
                 File[] repoFiles = repo.listFiles(); //list of repo contents
                 List<BuildingPanel> buildingPanels = new ArrayList<>(); // List to hold each platform / building panel
+                int maxHeight = 0;
+                int base_height = frame.getHeight()-50; //note down city/platform base and height
                 for (File directory : repoFiles) {
-
                     //if file is a directory, make a platform (city)
-
                     if (directory.isDirectory()) {
                         File[] city = directory.listFiles();
                         List<Building> buildings = new ArrayList<>();
                         int x = 20;
-                        int maxHeight = 0;
+
                         //for each building in a city / each file in the directory
                         for (File file : city) {
                             if (file.isFile()) {
@@ -126,8 +131,10 @@ public class CodeCity {
                             }
                         }
                         //draw the platform for city
-                        BuildingPanel buildingPanel = new BuildingPanel(buildings, maxHeight);
+                        BuildingPanel buildingPanel = new BuildingPanel(buildings, base_height);
                         buildingPanels.add(buildingPanel);
+                        base_height = base_height - maxHeight - 50;
+                        maxHeight = 0;
                     }
                     for (BuildingPanel buildingPanel : buildingPanels) {
                         frame.add(buildingPanel); // Add each building panel to the frame
