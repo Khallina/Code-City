@@ -1,16 +1,18 @@
 public class Building {
     
     private String name; // name of building is just name of class
+    private int x;
     private int height;
     private int base;
     private String color;
     private int transparency;
     private String family;
 
-    public Building(String name, int base, int height) {
+    public Building(String name, int base, int height, int x) {
         this.name = name;
         this.height = height; // number of lines
         this.base = base; // number of attributes
+        this.x = x;
         this.color = null;
         this.transparency = 0;
     }
@@ -44,4 +46,35 @@ public class Building {
         this.base = Util.countAttributes(obj);
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getBase() {
+        return base;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getTransparency() {
+        return transparency;
+    }
+
+    public String getFamily() {
+        return family;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

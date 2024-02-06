@@ -1,8 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 //Story: Parse the code
 
@@ -119,4 +117,35 @@ public class Parser {
         }
         return classInfoMap;
     }
+    /*
+    public static void main(String[] args) {
+        String filePath = "ParseTest";
+        Parser parser = new Parser();
+        Map<String, Info> result = parser.parse(filePath);
+        Iterator var4 = result.entrySet().iterator();
+
+        while(var4.hasNext()) {
+            Map.Entry<String, Info> entry = (Map.Entry)var4.next();
+            Info classInfo = (Info)entry.getValue();
+            if (classInfo.getClassName() != null) {
+                System.out.println("Class: " + classInfo.getClassName());
+            } else {
+                System.out.println("Interface: " + classInfo.getInterfaceName());
+                List<String> functions = classInfo.getFunctions();
+                if (!functions.isEmpty()) {
+                    System.out.println("   Functions: " + String.join(", ", functions));
+                }
+            }
+
+            System.out.println("   Lines of Code: " + classInfo.getLinesOfCode());
+            System.out.println("   Parent Class: " + classInfo.getParentClass());
+            System.out.println("   Implements Interface: " + classInfo.getImplementer());
+            System.out.println("   Global Variables: " + classInfo.getGlobalVariables());
+            System.out.println("   Local Variables: " + classInfo.getLocalVariables());
+            System.out.println();
+        }
+
+    }
+
+     */
 }
