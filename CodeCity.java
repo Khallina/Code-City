@@ -82,18 +82,12 @@ public class CodeCity {
                         //for each building in a city / each file in the directory
                         for (File file : city) {
                             if (file.isFile()) {
-                                System.setProperty("user.dir", repoPath); // Set the current directory to the repository path
-                                String currentDirectory = System.getProperty("user.dir");
-                                System.out.println("Current Directory: " + currentDirectory);
-                                File currentDir = new File(".");
-                                String basePath = currentDir.getAbsolutePath();
-                                String filePath = basePath + File.separator + "Blocks.java";
-                                System.out.println(filePath);
+                                String absolutePath = file.getAbsolutePath();
                                 Parser parser = new Parser();
 
                                 // Call the parse method and get the result
-                                //Map<String, Info> result = parser.parse(filePath);
-                                /*
+                                Map<String, Info> result = parser.parse(absolutePath);
+
                                 //make building for each file
                                 int height = 50;
                                 int base = 50;
@@ -135,19 +129,19 @@ public class CodeCity {
                                 buildings.add(b); //add the building to the list of buildings in the city platform
                                 if (height > maxHeight) {
                                     maxHeight = height; // Update the maximum height if necessary
-                                }*/
+                                }
                             }
                         }
-                        /*draw the platform for city
+                        //draw the platform for city
                         BuildingPanel buildingPanel = new BuildingPanel(buildings, base_height);
                         buildingPanels.add(buildingPanel);
                         base_height = base_height - maxHeight - 50;
-                        maxHeight = 0;*/
+                        maxHeight = 0;
                     }
-                    /*
+                    //
                     for (BuildingPanel buildingPanel : buildingPanels) {
                         frame.add(buildingPanel); // Add each building panel to the frame
-                    }*/
+                    }
                 }
             }
 
